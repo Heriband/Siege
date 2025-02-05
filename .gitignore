@@ -1,0 +1,7 @@
+/.plastic
+/.vs
+/Library
+/Logs
+/UserSettings
+*.csproj
+*.sln
