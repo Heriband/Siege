@@ -3,5 +3,6 @@
 /Library
 /Logs
 /UserSettings
+/Temp
 *.csproj
 *.sln
