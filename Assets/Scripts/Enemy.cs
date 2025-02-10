@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
-    public Entity target;
-
     protected override void Start()
     {
         base.Start();
