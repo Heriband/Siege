@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class BuildingPlacer : MonoBehaviour
 {
+
+    public GridSystem gridSystem;
     public static BuildingPlacer instance;
 
     protected GameObject building;
@@ -32,25 +34,23 @@ public class BuildingPlacer : MonoBehaviour
                 return;
             }
 
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition.z = 10f; // Distance par rapport à la caméra
-            Vector3 worldPosition = cameraPlayer.ScreenToWorldPoint(mousePosition);
+            Vector3Int mouseCellPos = gridSystem.GetMouseOnGridPos();
+            Vector3 newPos = new Vector3(mouseCellPos.x + 0.5f, mouseCellPos.y + 0.5f, 0);
 
             if (buildingGhost != null)
             {
-                buildingGhost.transform.position = worldPosition;
+                buildingGhost.transform.position = newPos;
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                PlaceBuilding(worldPosition);
+                PlaceBuilding(newPos);
             }
         }
     }
 
     public void SetBuildingPrefab(GameObject prefab)
     {
-        //Debug.Log("set building prefab");
         building = prefab;
         _PrepareBuilding();
     }
