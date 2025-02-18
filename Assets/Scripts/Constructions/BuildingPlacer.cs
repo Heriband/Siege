@@ -44,7 +44,12 @@ public class BuildingPlacer : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                PlaceBuilding(newPos);
+                TowerController towerController = building.GetComponent<TowerController>();
+                if (CastleController.instance.getGold() >= towerController.costGold)
+                {
+                    CastleController.instance.spendGold(towerController.costGold);
+                    PlaceBuilding(newPos);
+                }
             }
         }
     }
@@ -69,9 +74,12 @@ public class BuildingPlacer : MonoBehaviour
 
     private void PlaceBuilding(Vector3 position)
     {
-        if (building != null)
+        if (building != null && gridSystem.isTileMapFree(position))
         {
+            Debug.Log("tower create");
             Instantiate(building, position, Quaternion.identity);
+            gridSystem.placeBuildingTile(position);
+
 
             Destroy(buildingGhost);
             buildingGhost = null; 

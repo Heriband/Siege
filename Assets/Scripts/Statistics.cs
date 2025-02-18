@@ -28,8 +28,8 @@ public class Statistics
     
     public float moveSpeed;          // Vitesse de déplacement
 
-    [Header("Energie")]
-    public float energy;             // Ressource utilisée pour les améliorations
+    [Header("Ressources")]
+    public int gold;           
 
     public void Add(Statistics other)
     {

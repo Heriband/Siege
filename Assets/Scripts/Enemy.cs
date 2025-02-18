@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
+
+    public int amountGold = 10;
+
     protected override void Start()
     {
         base.Start();
@@ -15,6 +18,13 @@ public class Enemy : Entity
             target = CastleController.instance;
         }
         base.MoveRoutine(target);
+    }
+
+    protected override void Die()
+    {
+        
+        CastleController.instance.earnGold(amountGold);
+        base.Die();
     }
 
 }

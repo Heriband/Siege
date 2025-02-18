@@ -14,8 +14,6 @@ public class MobSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(currentLoop);
-
         if (currentLoop >= spawnTime)
         {
             createEnemy();
@@ -30,7 +28,6 @@ public class MobSpawner : MonoBehaviour
 
     public void createEnemy()
     {
-        Debug.Log(transform.position);
         Instantiate(enemyPrefab, transform.position , Quaternion.identity);
     }
 }

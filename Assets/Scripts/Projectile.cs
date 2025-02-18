@@ -7,10 +7,13 @@ public class Projectile : MonoBehaviour
     private float damage;
     private float lifetime = 2f;
 
+    public Vector3 lastEnemyPosition;
+
 
     public void Initialize(Entity newTarget, float projectileSpeed, float projectileDamage)
     {
         target = newTarget;
+        lastEnemyPosition = target.transform.position;
         speed = projectileSpeed;
         damage = projectileDamage;
 
@@ -20,16 +23,22 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         if (target == null) {
-            Destroy(gameObject);
-            return;
+            transform.position = Vector3.MoveTowards(transform.position, lastEnemyPosition, speed * Time.deltaTime);
+            if(Vector3.Distance(transform.position, lastEnemyPosition) < 0.1f )
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
-        // Déplacement direct vers la cible
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-
-        // Vérification si le projectile a atteint la cible
-        if (Vector3.Distance(transform.position, target.transform.position) < 0.1f)
-        {
-            HitTarget();
+        else{
+            // Déplacement direct vers la cible
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            lastEnemyPosition = target.transform.position;
+            // Vérification si le projectile a atteint la cible
+            if (Vector3.Distance(transform.position, target.transform.position) < 0.1f)
+            {
+                HitTarget();
+            }
         }
     }
 

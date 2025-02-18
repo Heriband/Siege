@@ -7,6 +7,8 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private Tilemap mainTilemap;
     [SerializeField] private Tilemap tempTilemap;
 
+    public TileBase buildingTileMap;
+
     private Vector3Int highlightedTilePos;
     private bool highlighted;
 
@@ -19,10 +21,24 @@ public class GridSystem : MonoBehaviour
         return mouseCellPos;
     }
 
+
+    public void placeBuildingTile(Vector3 position)
+    {
+        Vector3Int cellPosition = mainTilemap.WorldToCell(position);
+        mainTilemap.SetTile(cellPosition, buildingTileMap);
+    }
+
+    public bool isTileMapFree(Vector3 position)
+    {
+        Vector3Int cellPosition = mainTilemap.WorldToCell(position);
+        TileBase tile = mainTilemap.GetTile(cellPosition);
+
+        return !(tile == buildingTileMap);
+    }
+
     private void HighlightTile()
     {
         Vector3Int  mousegridPos = GetMouseOnGridPos(); 
-        Debug.Log(mousegridPos);
         if (highlightedTilePos != mousegridPos)
         {
             tempTilemap.SetTile(highlightedTilePos, null);
