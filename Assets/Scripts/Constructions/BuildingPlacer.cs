@@ -26,7 +26,7 @@ public class BuildingPlacer : MonoBehaviour
     private void Update()
     {
         //mode construction
-        if (building != null)
+        if (building)
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -36,18 +36,19 @@ public class BuildingPlacer : MonoBehaviour
 
             Vector3Int mouseCellPos = gridSystem.GetMouseOnGridPos();
             Vector3 newPos = new Vector3(mouseCellPos.x + 0.5f, mouseCellPos.y + 0.5f, 0);
+            ConstructionController controller = building.GetComponent<ConstructionController>();
 
-            if (buildingGhost != null)
+            if (buildingGhost)
             {
                 buildingGhost.transform.position = newPos;
+                (buildingGhost.GetComponent<SpriteRenderer>()).color = canBePlaced(controller) ?  Color.green :  Color.red;
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                TowerController towerController = building.GetComponent<TowerController>();
-                if (CastleController.instance.getGold() >= towerController.costGold)
-                {
-                    CastleController.instance.spendGold(towerController.costGold);
+                if (canBePlaced(controller))
+                {   
+                    CastleController.instance.spendGold(controller.costGold);
                     PlaceBuilding(newPos);
                 }
             }
@@ -72,11 +73,15 @@ public class BuildingPlacer : MonoBehaviour
         disableScript(buildingGhost);
     }
 
-    private void PlaceBuilding(Vector3 position)
+    private bool canBePlaced(ConstructionController controller)
     {
-        if (building != null && gridSystem.isTileMapFree(position))
-        {
-            Debug.Log("tower create");
+        return building && gridSystem.isTileMapFree(buildingGhost.transform.position) &&
+               CastleController.instance.getGold() >= controller.costGold;
+    }
+    
+    private void PlaceBuilding(Vector3 position)
+    { 
+            //Debug.Log("tower create");
             Instantiate(building, position, Quaternion.identity);
             gridSystem.placeBuildingTile(position);
 
@@ -84,12 +89,12 @@ public class BuildingPlacer : MonoBehaviour
             Destroy(buildingGhost);
             buildingGhost = null; 
             building = null;
-        }
+        
     }
 
     private void CancelBuilding()
     {
-        if (buildingGhost != null)
+        if (buildingGhost)
         {
             Destroy(buildingGhost);
             buildingGhost = null;

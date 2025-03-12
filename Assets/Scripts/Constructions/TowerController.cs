@@ -2,5 +2,9 @@ using UnityEngine;
 
 public class TowerController : ConstructionController
 {
-    public int costGold = 50; 
+    void Start()
+    {
+        costGold = 60;
+    }
+    
 }

@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 public class ConstructionController : Entity
 {
+    
+    public int costGold;
     protected override void Die()
     {
         base.Die();
